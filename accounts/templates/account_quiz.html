@@ -6,6 +6,7 @@
 </head>
 <body>
 <form method="POST">
+    {%csrf_token%}
         {% for q in questions %}
             <div>
                 <p><strong>Q{{ forloop.counter }}. {{ q.question }}</strong></p>
