@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+</head>
+<body>
+<form method="POST">
+        {% for q in questions %}
+            <div>
+                <p><strong>Q{{ forloop.counter }}. {{ q.question }}</strong></p>
+
+                <label>
+                    <input type="radio" name="q{{ q.id }}" value="A">
+                    {{ q.opt_a }}
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q{{ q.id }}" value="B">
+                    {{ q.opt_b }}
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q{{ q.id }}" value="C">
+                    {{ q.opt_c }}
+                </label><br>
+
+                <label>
+                    <input type="radio" name="q{{ q.id }}" value="D">
+                    {{ q.opt_d }}
+                </label><br>
+            </div>
+            <hr>
+        {% endfor %}
+
+        <button type="submit">Submit</button>
+    </form>
+
+
+</body>
+</html>
