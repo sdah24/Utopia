@@ -12,7 +12,8 @@ class Profile(models.Model):
     profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
     quiz_score = models.IntegerField(null=True, blank=True)    # percent or raw
     badge = models.CharField(max_length=20, blank=True, null=True)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.user.username
