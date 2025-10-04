@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+</head>
+<body>
+    <h1>You Must Pass The QUIZ Test To Register</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {% for q in questions %}
+            <div style="margin-bottom: 20px;">
+                <h3>Question {{ forloop.counter }}: {{ q.question_text }}</h3>
+                <label><input type="radio" name="q{{ q.id }}" value="A"> {{ q.opt_a }}</label><br>
+                <label><input type="radio" name="q{{ q.id }}" value="B"> {{ q.opt_b }}</label><br>
+                <label><input type="radio" name="q{{ q.id }}" value="C"> {{ q.opt_c }}</label><br>
+                <label><input type="radio" name="q{{ q.id }}" value="D"> {{ q.opt_d }}</label><br>
+            </div>
+        {% endfor %}
+        <button type="submit">Submit Your Answers</button>
+    </form>
+</body>
+
+</html>
