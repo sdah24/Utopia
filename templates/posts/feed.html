@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Feed</title></head>
+<body>
+    <h1>Feed</h1>
+    <p><a href="{% url 'posts:create_post' %}">Create Post</a></p>
+
+    {% for post in posts %}
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+            <p><strong><a href="{% url 'posts:profile_posts' post.profile.id %}">{{ post.profile.user.username }}</a></strong>
+               - {{ post.created_at }}</p>
+
+            {% if post.title %}<h3>{{ post.title }}</h3>{% endif %}
+            <p>{{ post.content|linebreaks }}</p>
+
+            {% if post.image %}
+                <p><img src="{{ post.image.url }}" style="max-width:400px;"></p>
+            {% endif %}
+
+            <p>Likes: {{ post.likes_count }} |
+                <form method="post" action="{% url 'posts:toggle_like' post.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">{% if post.id in liked_post_ids %}Unlike{% else %}Like{% endif %}</button>
+                </form>
+                <a href="{% url 'posts:detail' post.id %}">Comments ({{ post.comments.count }})</a>
+            </p>
+        </div>
+    {% empty %}
+        <p>No posts yet.</p>
+    {% endfor %}
+</body>
+</html>

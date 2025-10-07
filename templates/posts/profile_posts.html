@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>{{ profile_user.user.username }}</title></head>
+<body>
+    <h1>{{ profile_user.user.username }}</h1>
+    <p>Followers: {{ followers_count }} | Following: {{ following_count }}</p>
+
+    {% if request.user.is_authenticated and request.user.profile.id != profile_user.id %}
+        <form method="post" action="{% url 'posts:toggle_follow' profile_user.id %}">
+            {% csrf_token %}
+            <button type="submit">{% if is_following %}Unfollow{% else %}Follow{% endif %}</button>
+        </form>
+    {% endif %}
+
+    <hr>
+    <h2>Posts</h2>
+    {% for post in posts %}
+        <div style="border:1px solid #ddd; padding:6px; margin-bottom:8px;">
+            {% if post.title %}<h3>{{ post.title }}</h3>{% endif %}
+            <p>{{ post.content|linebreaks }}</p>
+            <small>{{ post.created_at }}</small>
+        </div>
+    {% empty %}
+        <p>No posts yet.</p>
+    {% endfor %}
+    <p><a href="{% url 'posts:feed' %}">Back to feed</a></p>
+</body>
+</html>

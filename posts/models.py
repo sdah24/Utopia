@@ -24,7 +24,7 @@ class Post(models.Model):
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="comments")
-    profile = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE)
+    profile = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE, null=True, blank=True)
     body = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
 
