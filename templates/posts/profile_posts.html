@@ -1,28 +1,46 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>{{ profile_user.user.username }}</title></head>
-<body>
-    <h1>{{ profile_user.user.username }}</h1>
-    <p>Followers: {{ followers_count }} | Following: {{ following_count }}</p>
+{% extends "base.html" %}
+{% block content %}
+  <div style="display:flex;gap:20px">
+    <section style="flex:1">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <h2>{{ profile_user.user.username }}</h2>
+            <div class="muted">Followers: {{ followers_count }} • Following: {{ following_count }}</div>
+          </div>
 
-    {% if request.user.is_authenticated and request.user.profile.id != profile_user.id %}
-        <form method="post" action="{% url 'posts:toggle_follow' profile_user.id %}">
-            {% csrf_token %}
-            <button type="submit">{% if is_following %}Unfollow{% else %}Follow{% endif %}</button>
-        </form>
-    {% endif %}
-
-    <hr>
-    <h2>Posts</h2>
-    {% for post in posts %}
-        <div style="border:1px solid #ddd; padding:6px; margin-bottom:8px;">
-            {% if post.title %}<h3>{{ post.title }}</h3>{% endif %}
-            <p>{{ post.content|linebreaks }}</p>
-            <small>{{ post.created_at }}</small>
+          {% if request.user.is_authenticated and request.user.profile.id != profile_user.id %}
+            <form method="post" action="{% url 'posts:toggle_follow' profile_user.id %}">
+              {% csrf_token %}
+              <button class="btn-ghost" type="submit">{% if is_following %}Unfollow{% else %}Follow{% endif %}</button>
+            </form>
+          {% endif %}
         </div>
-    {% empty %}
-        <p>No posts yet.</p>
-    {% endfor %}
-    <p><a href="{% url 'posts:feed' %}">Back to feed</a></p>
-</body>
-</html>
+      </div>
+
+      <h3 style="margin-top:10px">Posts</h3>
+      {% for post in posts %}
+        <div class="card">
+          {% if post.title %}<h4>{{ post.title }}</h4>{% endif %}
+          <p>{{ post.content|linebreaksbr }}</p>
+          <small class="muted">{{ post.created_at|date:"M d, Y H:i" }}</small>
+        </div>
+      {% empty %}
+        <div class="card">No posts yet.</div>
+      {% endfor %}
+    </section>
+
+    <aside style="width:260px">
+      <div class="card">
+        <h4>About</h4>
+        <p class="small">Badge: {{ profile_user.badge }}</p>
+        <p class="small">Quiz score: {{ profile_user.quiz_score }}</p>
+      </div>
+      <div class="card">
+        <h4>Quick links</h4>
+        <p><a href="{% url 'posts:create_post' %}">Create Post</a></p>
+        <p><a href="{% url 'posts:feed' %}">Back to Feed</a></p>
+      </div>
+    </aside>
+  </div>
+{% endblock %}

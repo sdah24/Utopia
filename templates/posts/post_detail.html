@@ -1,40 +1,56 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Post</title></head>
-<body>
-    <h1>Post</h1>
-    <p><strong><a href="{% url 'posts:profile_posts' post.profile.id %}">{{ post.profile.user.username }}</a></strong> - {{ post.created_at }}</p>
-    {% if post.title %}<h2>{{ post.title }}</h2>{% endif %}
-    <p>{{ post.content|linebreaks }}</p>
-    {% if post.image %}<img src="{{ post.image.url }}" style="max-width:400px;">{% endif %}
-    <p>Likes: {{ post.likes_count }}</p>
+{% extends "base.html" %}
+{% block content %}
+  <article class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <strong><a href="{% url 'posts:profile_posts' post.profile.id %}">{{ post.profile.user.username }}</a></strong>
+        <div class="meta">{{ post.created_at|date:"M d, Y H:i" }}</div>
+      </div>
+      <div class="muted">Likes: {{ post.likes_count }}</div>
+    </div>
 
-    <form method="post" action="{% url 'posts:toggle_like' post.id %}">
+    {% if post.title %}
+      <h2 style="margin-top:8px">{{ post.title }}</h2>
+    {% endif %}
+    <p>{{ post.content|linebreaksbr }}</p>
+
+    {% if post.image %}
+      <img class="post-image" src="{{ post.image.url }}" alt="post image">
+    {% endif %}
+
+    <div style="margin-top:12px">
+      <form method="post" action="{% url 'posts:toggle_like' post.id %}" style="display:inline">
         {% csrf_token %}
-        <button type="submit">{% if user_liked %}Unlike{% else %}Like{% endif %}</button>
-    </form>
+        <button class="btn-ghost" type="submit">{% if user_liked %}Unlike{% else %}Like{% endif %}</button>
+      </form>
 
-    <hr>
-    <h3>Comments</h3>
+      <a class="btn-ghost" href="{% url 'posts:feed' %}">Back to feed</a>
+    </div>
+  </article>
+
+  <section class="card">
+    <h3>Comments ({{ post.comments.count }})</h3>
+
     {% for comment in post.comments.all %}
-        <div>
-            <strong>{{ comment.profile.user.username }}</strong> - {{ comment.created_at }}<br>
-            {{ comment.body|linebreaks }}
-        </div>
+      <div class="comment">
+        <strong>{{ comment.profile.user.username if comment.profile else "Anonymous" }}</strong>
+        <div class="muted">{{ comment.created_at|date:"M d, Y H:i" }}</div>
+        <p>{{ comment.body|linebreaksbr }}</p>
+      </div>
     {% empty %}
-        <p>No comments yet.</p>
+      <p class="muted">No comments yet.</p>
     {% endfor %}
 
     {% if user.is_authenticated %}
-        <form method="post" action="{% url 'posts:add_comment' post.id %}">
-            {% csrf_token %}
-            {{ comment_form.as_p }}
-            <button type="submit">Add Comment</button>
-        </form>
+      <form method="post" action="{% url 'posts:add_comment' post.id %}">
+        {% csrf_token %}
+        {{ comment_form.body }}
+        <div style="margin-top:8px">
+          <button class="btn" type="submit">Add Comment</button>
+        </div>
+      </form>
     {% else %}
-        <p><a href="{% url 'login' %}">Login</a> to comment</p>
+      <p><a href="{% url 'login' %}">Login</a> to add a comment.</p>
     {% endif %}
-
-    <p><a href="{% url 'posts:feed' %}">Back to feed</a></p>
-</body>
-</html>
+  </section>
+{% endblock %}

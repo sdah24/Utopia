@@ -1,32 +1,62 @@
-<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Feed</title></head>
-<body>
-    <h1>Feed</h1>
-    <p><a href="{% url 'posts:create_post' %}">Create Post</a></p>
-
-    {% for post in posts %}
-        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-            <p><strong><a href="{% url 'posts:profile_posts' post.profile.id %}">{{ post.profile.user.username }}</a></strong>
-               - {{ post.created_at }}</p>
-
-            {% if post.title %}<h3>{{ post.title }}</h3>{% endif %}
-            <p>{{ post.content|linebreaks }}</p>
-
-            {% if post.image %}
-                <p><img src="{{ post.image.url }}" style="max-width:400px;"></p>
-            {% endif %}
-
-            <p>Likes: {{ post.likes_count }} |
-                <form method="post" action="{% url 'posts:toggle_like' post.id %}" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit">{% if post.id in liked_post_ids %}Unlike{% else %}Like{% endif %}</button>
-                </form>
-                <a href="{% url 'posts:detail' post.id %}">Comments ({{ post.comments.count }})</a>
-            </p>
+{% extends "base.html" %}
+{% block content %}
+  <div style="display:flex;gap:20px;align-items:flex-start">
+    <section style="flex:1;min-width:0">
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2 style="margin:0">Your Feed</h2>
+          <a class="btn" href="{% url 'posts:create_post' %}">New Post</a>
         </div>
-    {% empty %}
-        <p>No posts yet.</p>
-    {% endfor %}
-</body>
-</html>
+        <p class="muted" style="margin:8px 0 0">Posts from you and people you follow.</p>
+      </div>
+
+      {% for post in posts %}
+        <article class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <strong><a href="{% url 'posts:profile_posts' post.profile.id %}">{{ post.profile.user.username }}</a></strong>
+              <div class="meta">{{ post.created_at|date:"M d, Y H:i" }}</div>
+            </div>
+            <div class="muted">Likes: {{ post.likes_count }}</div>
+          </div>
+
+          {% if post.title %}
+            <h3 style="margin:10px 0 6px">{{ post.title }}</h3>
+          {% endif %}
+          <p style="margin:0 0 8px">{{ post.content|linebreaksbr }}</p>
+
+          {% if post.image %}
+            <img class="post-image" src="{{ post.image.url }}" alt="post image">
+          {% endif %}
+
+          <div style="margin-top:10px;">
+            <form method="post" action="{% url 'posts:toggle_like' post.id %}" style="display:inline">
+              {% csrf_token %}
+              <button class="btn-ghost" type="submit">{% if post.id in liked_post_ids %}Unlike{% else %}Like{% endif %}</button>
+            </form>
+
+            <a class="btn-ghost" href="{% url 'posts:detail' post.id %}">Comments ({{ post.comments.count }})</a>
+          </div>
+        </article>
+      {% empty %}
+        <div class="card">No posts to show. Create a post to get started.</div>
+      {% endfor %}
+    </section>
+
+    <aside style="width:260px">
+      <div class="card">
+        <h4 style="margin:0 0 6px">Quick Actions</h4>
+        {% if user.is_authenticated %}
+          <p><a class="btn" href="{% url 'posts:create_post' %}">Create Post</a></p>
+          <p class="small"><a href="{% url 'posts:profile_posts' user.profile.id %}">My Profile</a></p>
+        {% else %}
+          <p><a class="btn" href="{% url 'login' %}">Login to interact</a></p>
+        {% endif %}
+      </div>
+      <div class="card">
+        <h4 style="margin:0 0 6px">Help</h4>
+        <p class="small">Pass the registration quiz to create posts and comment.</p>
+      </div>
+    </aside>
+  </div>
+{% endblock %}
