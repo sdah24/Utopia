@@ -4,7 +4,7 @@ from . import views
 app_name = "posts"
 
 urlpatterns = [
-    path("", views.feed, name="feed"),
+    path("feed/", views.feed, name="feed"),
     path("create/", views.create_post, name="create_post"),
     path("post/<int:post_id>/", views.post_detail, name="detail"),
     path("post/<int:post_id>/comment/", views.add_comment, name="add_comment"),
