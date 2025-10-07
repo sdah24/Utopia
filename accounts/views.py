@@ -9,7 +9,7 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import Question
 
-PASS_PERCENT = 60  # adjust
+PASS_PERCENT = 60
 
 def home(request):
     return render(request, 'home.html')
