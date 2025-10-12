@@ -126,22 +126,28 @@ def profile_posts(request, profile_id):
     })
 @login_required
 def edit_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id, profile=request.user.profile)
+    post = get_object_or_404(Post, id=post_id, profile__user=request.user)
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
-            messages.success(request, "Post updated successfully.")
-            return redirect("posts:detail", post_id=post_id)
+            messages.success(request, "Post updated successfully!")
+            return redirect("posts:detail", post_id=post.id)
     else:
         form = PostForm(instance=post)
-    return render(request, "posts/post_form.html", {"form": form, "edit_mode": True})
+    return render(request, "posts/post_form.html", {"form": form, "is_edit": True})
+
 
 @login_required
 def delete_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id, profile=request.user.profile)
+    post = get_object_or_404(Post, id=post_id, profile__user=request.user)
     if request.method == "POST":
         post.delete()
-        messages.success(request, "Post deleted.")
+        messages.success(request, "Post deleted successfully!")
         return redirect("posts:feed")
     return render(request, "posts/post_confirm_delete.html", {"post": post})
+
+
+def emergency_feed(request):
+    posts = Post.objects.filter(is_emergency=True).select_related("profile__user")
+    return render(request, "posts/emergency_feed.html", {"posts": posts})
