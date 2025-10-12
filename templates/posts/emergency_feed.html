@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <div class="card mb-3">
+    <div class="card-body">
+      <h4>🚨 Emergency Feed</h4>
+      <p class="text-muted mb-0">Posts marked as emergencies.</p>
+    </div>
+  </div>
+
+  {% for post in posts %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <div>
+          <a href="{% url 'posts:profile_posts' post.profile.id %}" class="fw-bold text-decoration-none">
+            {{ post.profile.user.username }}
+          </a>
+          <small class="text-muted d-block">{{ post.created_at|date:"M d, Y H:i" }}</small>
+        </div>
+        <span class="badge bg-danger">Emergency</span>
+      </div>
+
+      {% if post.title %}<h5 class="mt-2">{{ post.title }}</h5>{% endif %}
+      <p>{{ post.content|truncatewords:30 }}</p>
+
+      {% if post.image %}
+      <img src="{{ post.image.url }}" alt="Emergency Post" class="img-fluid rounded mb-2">
+      {% endif %}
+
+      <a href="{% url 'posts:detail' post.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="alert alert-secondary">No emergency posts found.</div>
+  {% endfor %}
+</div>
+{% endblock %}
