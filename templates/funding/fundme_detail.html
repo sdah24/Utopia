@@ -1,39 +1,10 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>{{ post.title }}</h2>
-{% if post.image %}
-<img src="{{ post.image.url }}" class="img-fluid mb-3">
-{% endif %}
-<p>{{ post.description }}</p>
-<p><strong>Goal:</strong> {{ post.goal_amount }} | <strong>Collected:</strong> {{ post.collected_amount }}</p>
-<p>Progress: {{ post.progress_percent }}%</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
 
-{% if user == post.author %}
-<a href="{% url 'fundme_update' post.pk %}" class="btn btn-warning">Edit</a>
-<form action="{% url 'fundme_delete' post.pk %}" method="post" style="display:inline;">
-  {% csrf_token %}
-  <button class="btn btn-danger">Delete</button>
-</form>
-{% endif %}
-
-<hr>
-<h4>Donations</h4>
-<ul>
-  {% for d in donations %}
-  <li><strong>{{ d.donor.username }}</strong> donated {{ d.amount }} on {{ d.donated_at }}</li>
-  {% empty %}
-  <p>No donations yet.</p>
-  {% endfor %}
-</ul>
-
-{% if user.is_authenticated %}
-<h4>Make a Donation</h4>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button class="btn btn-success">Donate</button>
-</form>
-{% else %}
-<p><a href="{% url 'login' %}">Login</a> to donate.</p>
-{% endif %}
-{% endblock %}
+</body>
+</html>
