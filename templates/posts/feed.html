@@ -12,13 +12,28 @@
 
       {% for post in posts %}
         <article class="card">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div>
-              <strong><a href="{% url 'posts:profile_posts' post.profile.id %}">{{ post.profile.user.username }}</a></strong>
-              <div class="meta">{{ post.created_at|date:"M d, Y H:i" }}</div>
-            </div>
-            <div class="muted">Likes: {{ post.likes_count }}</div>
-          </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+  <div style="display:flex;align-items:center;gap:8px;">
+    <!-- Profile badge -->
+    <div style="width:12px;height:12px;border-radius:50%;background-color:
+      {% if post.profile.badge == 'gold' %}gold
+      {% elif post.profile.badge == 'silver' %}silver
+      {% elif post.profile.badge == 'bronze' %}peru
+      {% else %}gray{% endif %};">
+    </div>
+
+    <strong>
+      <a href="{% url 'posts:profile_posts' post.profile.id %}">
+        {{ post.profile.user.username }}
+      </a>
+    </strong>
+    {% if post.is_emergency %}
+      <span class="badge bg-danger" style="margin-left:6px;">Emergency 🚨</span>
+    {% endif %}
+  </div>
+  <div class="muted">Likes: {{ post.likes_count }}</div>
+</div>
+
 
           {% if post.title %}
             <h3 style="margin:10px 0 6px">{{ post.title }}</h3>
