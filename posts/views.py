@@ -124,3 +124,24 @@ def profile_posts(request, profile_id):
         "followers_count": followers_count,
         "following_count": following_count,
     })
+@login_required
+def edit_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id, profile=request.user.profile)
+    if request.method == "POST":
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Post updated successfully.")
+            return redirect("posts:detail", post_id=post_id)
+    else:
+        form = PostForm(instance=post)
+    return render(request, "posts/post_form.html", {"form": form, "edit_mode": True})
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id, profile=request.user.profile)
+    if request.method == "POST":
+        post.delete()
+        messages.success(request, "Post deleted.")
+        return redirect("posts:feed")
+    return render(request, "posts/post_confirm_delete.html", {"post": post})

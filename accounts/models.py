@@ -11,7 +11,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)
     profile_image = models.ImageField(upload_to='profiles/', blank=True, null=True)
     quiz_score = models.IntegerField(null=True, blank=True)    # percent or raw
-    badge = models.CharField(max_length=20, blank=True, null=True)
+    badge = models.CharField(max_length=50, choices=[("Bronze","Bronze"),("Silver","Silver"),("Gold","Gold")], default="Bronze")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
