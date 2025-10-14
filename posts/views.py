@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.urls import reverse
 from .models import Post, Comment, Like, Follow
 from .forms import PostForm, CommentForm
+from accounts.models import Profile
 
 # Helper: get request.user.profile safely
 def _get_profile(request):
@@ -151,3 +152,21 @@ def delete_post(request, post_id):
 def emergency_feed(request):
     posts = Post.objects.filter(is_emergency=True).select_related("profile__user")
     return render(request, "posts/emergency_feed.html", {"posts": posts})
+
+
+
+@login_required
+def people_list(request):
+    profile = request.user.profile
+
+    # All profiles except your own
+    people = Profile.objects.exclude(id=profile.id)
+
+    # Get list of IDs you already follow
+    following_ids = Follow.objects.filter(follower=profile).values_list("following_id", flat=True)
+
+    return render(request, "posts/people_list.html", {
+        "people": people,
+        "following_ids": set(following_ids)
+    })
+
