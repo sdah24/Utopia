@@ -52,7 +52,14 @@
       <h5>Comments ({{ post.comments.count }})</h5>
       {% for comment in post.comments.all %}
         <div class="border-bottom mb-2 pb-2">
-          <strong>{{ comment.profile.user.username if comment.profile else "Anonymous" }}</strong>
+         <strong>
+  {% if comment.profile %}
+    {{ comment.profile.user.username }}
+  {% else %}
+    Anonymous
+  {% endif %}
+</strong>
+
           <small class="text-muted">{{ comment.created_at|date:"M d, Y H:i" }}</small>
           <p class="mb-0">{{ comment.body|linebreaksbr }}</p>
         </div>

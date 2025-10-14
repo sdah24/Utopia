@@ -94,5 +94,16 @@ def profile(request):
 
 @login_required
 def people_list(request):
-    users = User.objects.exclude(id=request.user.id)
-    return render(request, 'accounts/people_list.html', {'users': users})
+    from .models import Profile
+    # Get all profiles except the current user's profile
+    people = Profile.objects.exclude(user=request.user)
+
+    # Get IDs of people the user is following (optional if you have a follow model)
+    following_ids = []
+    if hasattr(request.user, 'following'):
+        following_ids = request.user.following.values_list('id', flat=True)
+
+    return render(request, 'accounts/people_list.html', {
+        'people': people,
+        'following_ids': following_ids,
+    })
