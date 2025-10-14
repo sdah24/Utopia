@@ -15,6 +15,9 @@ path("post/<int:post_id>/edit/", views.edit_post, name="edit_post"),
 path("post/<int:post_id>/delete/", views.delete_post, name="delete_post"),
 path("emergency/", views.emergency_feed, name="emergency_feed"),
 path("people/", views.people_list, name="people_list"),
+path("ask/", views.ask_question, name="ask_question"),
+    path("questions/", views.question_list, name="question_list"),
+    path("questions/<int:pk>/", views.question_detail, name="question_detail"),
 
 
 ]

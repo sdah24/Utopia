@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Ask & Answer</h2>
+<a href="{% url 'posts:ask_question' %}" class="btn btn-primary mb-3">Ask a Question</a>
+<ul>
+  {% for q in questions %}
+    <li><a href="{% url 'posts:question_detail' q.pk %}">{{ q.title }}</a> — {{ q.user.username }}</li>
+  {% empty %}
+    <p>No questions yet.</p>
+  {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ question.title }}</h2>
+<p>{{ question.body }}</p>
+<p><small>Asked by {{ question.user.username }} on {{ question.created_at }}</small></p>
+
+<hr>
+<h4>Answers</h4>
+<ul>
+  {% for ans in question.answers.all %}
+    <li>{{ ans.body }} — <i>{{ ans.user.username }}</i></li>
+  {% empty %}
+    <p>No answers yet.</p>
+  {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<hr>
+<h5>Your Answer:</h5>
+<form method="post">
+  {% csrf_token %}
+  <textarea name="body" rows="3" required></textarea><br>
+  <button class="btn btn-success">Submit Answer</button>
+</form>
+{% else %}
+<p><a href="{% url 'login' %}">Login</a> to answer.</p>
+{% endif %}
+{% endblock %}
