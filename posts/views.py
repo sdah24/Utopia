@@ -9,6 +9,10 @@ from .models import Post, Comment, Like, Follow
 from .forms import PostForm, CommentForm
 from accounts.models import Profile
 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Question, Answer
+
 # Helper: get request.user.profile safely
 def _get_profile(request):
     # If your Profile auto-creation is not set, ensure profile exists
@@ -170,3 +174,29 @@ def people_list(request):
         "following_ids": set(following_ids)
     })
 
+# posts/views.py
+
+
+def question_list(request):
+    questions = Question.objects.all().order_by('-created_at')
+    return render(request, 'posts/question_list.html', {'questions': questions})
+
+@login_required
+def question_detail(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    if request.method == 'POST':
+        body = request.POST.get('body')
+        if body:
+            Answer.objects.create(question=question, user=request.user, body=body)
+            return redirect('question_detail', pk=pk)
+    return render(request, 'posts/question_detail.html', {'question': question})
+
+@login_required
+def ask_question(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        if title and body:
+            Question.objects.create(user=request.user, title=title, body=body)
+            return redirect('question_list')
+    return render(request, 'posts/ask_question.html')
