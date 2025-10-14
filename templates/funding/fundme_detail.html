@@ -16,8 +16,8 @@
 <p>Progress: {{ post.progress_percent }}%</p>
 
 {% if user == post.author %}
-<a href="{% url 'fundme_update' post.pk %}" class="btn btn-warning">Edit</a>
-<form action="{% url 'fundme_delete' post.pk %}" method="post" style="display:inline;">
+<a href="{% url 'funding:fundme_update' post.pk %}" class="btn btn-warning">Edit</a>
+<form action="{% url 'funding:fundme_delete' post.pk %}" method="post" style="display:inline;">
   {% csrf_token %}
   <button class="btn btn-danger">Delete</button>
 </form>

@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 
+app_name = "funding"
+
 urlpatterns = [
     path("", views.fundme_list, name="fundme_list"),
     path("<int:pk>/", views.fundme_detail, name="fundme_detail"),

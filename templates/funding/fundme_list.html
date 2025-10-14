@@ -8,7 +8,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>FundMe Campaigns</h2>
-<a href="{% url 'fundme_create' %}" class="btn btn-primary mb-3">+ Create FundMe</a>
+<a href="{% url 'funding:fundme_create' %}" class="btn btn-primary mb-3">+ Create FundMe</a>
 <div class="row">
   {% for post in posts %}
   <div class="col-md-4 mb-3">
@@ -20,7 +20,7 @@
         <h5 class="card-title">{{ post.title }}</h5>
         <p class="card-text">{{ post.description|truncatechars:100 }}</p>
         <p><strong>Goal:</strong> {{ post.goal_amount }} | <strong>Collected:</strong> {{ post.collected_amount }}</p>
-        <a href="{% url 'fundme_detail' post.pk %}" class="btn btn-outline-primary btn-sm">View</a>
+        <a href="{% url 'funding:fundme_detail' post.pk %}" class="btn btn-outline-primary btn-sm">View</a>
       </div>
     </div>
   </div>

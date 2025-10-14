@@ -24,7 +24,7 @@ def fundme_detail(request, pk):
                 donation.fundme = post
                 donation.save()
                 messages.success(request, "Donation successful! 🎉")
-                return redirect("fundme_detail", pk=pk)
+                return redirect("funding:fundme_detail", pk=pk)
         else:
             messages.error(request, "You must be logged in to donate.")
             return redirect("login")
@@ -42,7 +42,7 @@ def fundme_create(request):
             fundme.author = request.user
             fundme.save()
             messages.success(request, "Your FundMe post has been created! 💰")
-            return redirect("fundme_list")
+            return redirect("funding:fundme_list")
     else:
         form = FundMePostForm()
     return render(request, "funding/fundme_form.html", {"form": form, "title": "Create FundMe"})
@@ -68,5 +68,5 @@ def fundme_delete(request, pk):
     if request.method == "POST":
         post.delete()
         messages.success(request, "Your FundMe post has been deleted.")
-        return redirect("fundme_list")
+        return redirect("funding:fundme_list")
     return render(request, "funding/fundme_confirm_delete.html", {"post": post})
