@@ -41,7 +41,8 @@
   <button class="btn btn-success">Donate</button>
 </form>
 {% else %}
-<p><a href="{% url 'login' %}">Login</a> to donate.</p>
+<p><a href="{% url 'accounts:login' %}">Login</a> to donate.</p>
+
 {% endif %}
 {% endblock %}
 
