@@ -22,9 +22,9 @@
         </ul>
 
         <ul class="navbar-nav ms-auto">
-          {% if user.is_authenticated %}
+          {% if u ser.is_authenticated %}
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:people_list' %}">People</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'posts:profile_posts' user.profile.id %}">Profile</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
           {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
