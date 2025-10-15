@@ -14,6 +14,7 @@ class Profile(models.Model):
     badge = models.CharField(max_length=50, choices=[("Bronze","Bronze"),("Silver","Silver"),("Gold","Gold")], default="Bronze")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username

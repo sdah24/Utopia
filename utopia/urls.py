@@ -27,7 +27,7 @@ urlpatterns = [
     path('posts/', include(('posts.urls', 'posts'), namespace='posts')),
     path("funding/", include("funding.urls", namespace="funding")),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
