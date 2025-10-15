@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}  <!--  Add this line -->
+{% load static %}
 {% block content %}
 <div class="container mt-4">
   <div class="row">
@@ -17,22 +17,24 @@
       <div class="card mb-4 shadow-sm">
         <div class="card-body">
 
-          <!--  Header: Profile Picture, Username, Badge -->
+          <!-- 🔹 Header: Profile Picture, Username, Badge -->
           <div class="d-flex align-items-center mb-2">
+
             {% if post.profile.profile_picture %}
               <img src="{{ post.profile.profile_picture.url }}"
                    alt="Profile Picture"
                    class="rounded-circle me-2"
                    width="45" height="45">
             {% else %}
-              <img src="{% static 'default_profile.png' %}"
-                   alt="Default Profile Picture"
-                   class="rounded-circle me-2"
-                   width="45" height="45">
+              <div class="rounded-circle bg-light d-flex justify-content-center align-items-center me-2"
+                   style="width:45px; height:45px; border:1px solid #ccc;">
+                <i class="bi bi-person text-secondary" style="font-size:20px;"></i>
+              </div>
             {% endif %}
 
             <div>
-              <a href="{% url 'posts:profile_posts' post.profile.id %}" class="fw-bold text-decoration-none text-dark">
+              <a href="{% url 'posts:profile_posts' post.profile.id %}"
+                 class="fw-bold text-decoration-none text-dark">
                 {{ post.profile.user.username }}
               </a>
               <div>
@@ -40,21 +42,25 @@
               </div>
             </div>
 
-            <!-- Badge -->
-            <div class="ms-3 rounded-circle"
-                 style="width:12px; height:12px; background-color:
-                 {% if post.profile.badge == 'gold' %}gold
-                 {% elif post.profile.badge == 'silver' %}silver
-                 {% elif post.profile.badge == 'bronze' %}peru
-                 {% else %}gray{% endif %};">
-            </div>
+            <!-- 🔹 Badge Color -->
+            {% if post.profile.badge %}
+              <span class="badge ms-3"
+                    style="background-color:
+                      {% if post.profile.badge == 'gold' %}#FFD700
+                      {% elif post.profile.badge == 'silver' %}#C0C0C0
+                      {% elif post.profile.badge == 'bronze' %}#CD7F32
+                      {% else %}#808080{% endif %};
+                      color: black; border: 1px solid #999;">
+                {{ post.profile.badge|title }}
+              </span>
+            {% endif %}
 
             {% if post.is_emergency %}
               <span class="badge bg-danger ms-2">🚨 Emergency</span>
             {% endif %}
           </div>
 
-          <!--  Post Content -->
+          <!-- 🔹 Post Content -->
           {% if post.title %}
             <h5 class="mt-2">{{ post.title }}</h5>
           {% endif %}
@@ -64,7 +70,7 @@
             <img src="{{ post.image.url }}" alt="Post image" class="img-fluid rounded mb-2">
           {% endif %}
 
-          <!--  Post Footer -->
+          <!-- 🔹 Post Footer -->
           <div class="d-flex justify-content-between align-items-center border-top pt-2">
             <form method="post" action="{% url 'posts:toggle_like' post.id %}">
               {% csrf_token %}
@@ -85,6 +91,7 @@
               {% endif %}
             </div>
           </div>
+
         </div>
       </div>
       {% empty %}

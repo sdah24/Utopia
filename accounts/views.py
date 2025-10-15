@@ -11,6 +11,10 @@ from .models import Question
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import ProfilePictureForm
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .forms import ProfilePictureForm
+
 
 
 PASS_PERCENT = 60
@@ -93,19 +97,29 @@ def logout_view(request):
     return redirect("home")
 
 
+
+
 @login_required
 def profile(request):
     profile = request.user.profile
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ProfilePictureForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
+            if 'profile_picture-clear' in request.POST:
+                if profile.profile_picture:
+                    profile.profile_picture.delete(save=False)
+                profile.profile_picture = None
+
             form.save()
+            messages.success(request, "Profile updated successfully.")
             return redirect('accounts:profile')
     else:
         form = ProfilePictureForm(instance=profile)
 
-    return render(request, 'accounts/account_profile.html', {'profile': profile, 'form': form})
+    return render(request, 'accounts/account_profile.html', {'form': form, 'profile': profile})
+
+
 @login_required
 def people_list(request):
     from .models import Profile
