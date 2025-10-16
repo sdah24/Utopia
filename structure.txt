@@ -1,0 +1,152 @@
+Folder PATH listing
+Volume serial number is ACBF-A784
+C:.
+³   db.sqlite3
+³   manage.py
+³   requirements.txt
+³   structure.txt
+³   
+ÃÄÄÄaccounts
+³   ³   admin.py
+³   ³   apps.py
+³   ³   forms.py
+³   ³   models.py
+³   ³   signals.py
+³   ³   tests.py
+³   ³   urls.py
+³   ³   views.py
+³   ³   __init__.py
+³   ³   
+³   ÃÄÄÄmigrations
+³   ³   ³   0001_initial.py
+³   ³   ³   0002_alter_profile_badge.py
+³   ³   ³   0003_profile_profile_picture.py
+³   ³   ³   __init__.py
+³   ³   ³   
+³   ³   ÀÄÄÄ__pycache__
+³   ³           0001_initial.cpython-313.pyc
+³   ³           0002_alter_profile_badge.cpython-313.pyc
+³   ³           0003_profile_profile_picture.cpython-313.pyc
+³   ³           __init__.cpython-313.pyc
+³   ³           
+³   ÀÄÄÄ__pycache__
+³           admin.cpython-313.pyc
+³           apps.cpython-313.pyc
+³           forms.cpython-313.pyc
+³           models.cpython-313.pyc
+³           signals.cpython-313.pyc
+³           urls.cpython-313.pyc
+³           views.cpython-313.pyc
+³           __init__.cpython-313.pyc
+³           
+ÃÄÄÄfunding
+³   ³   admin.py
+³   ³   apps.py
+³   ³   forms.py
+³   ³   models.py
+³   ³   tests.py
+³   ³   urls.py
+³   ³   views.py
+³   ³   __init__.py
+³   ³   
+³   ÃÄÄÄmigrations
+³   ³   ³   0001_initial.py
+³   ³   ³   __init__.py
+³   ³   ³   
+³   ³   ÀÄÄÄ__pycache__
+³   ³           0001_initial.cpython-313.pyc
+³   ³           __init__.cpython-313.pyc
+³   ³           
+³   ÀÄÄÄ__pycache__
+³           admin.cpython-313.pyc
+³           apps.cpython-313.pyc
+³           forms.cpython-313.pyc
+³           models.cpython-313.pyc
+³           urls.cpython-313.pyc
+³           views.cpython-313.pyc
+³           __init__.cpython-313.pyc
+³           
+ÃÄÄÄmedia
+³   ÃÄÄÄposts
+³   ³       8867.Microsoft_5F00_Logo_2D00_for_2D00_screen-1920x706.jpg
+³   ³       IMG_20211011_162751.jpg
+³   ³       
+³   ÀÄÄÄprofile_pics
+³           unnamed.jpg
+³           
+ÃÄÄÄposts
+³   ³   admin.py
+³   ³   apps.py
+³   ³   forms.py
+³   ³   models.py
+³   ³   tests.py
+³   ³   urls.py
+³   ³   views.py
+³   ³   __init__.py
+³   ³   
+³   ÃÄÄÄmigrations
+³   ³   ³   0001_initial.py
+³   ³   ³   0002_question_answer.py
+³   ³   ³   __init__.py
+³   ³   ³   
+³   ³   ÀÄÄÄ__pycache__
+³   ³           0001_initial.cpython-313.pyc
+³   ³           0002_question_answer.cpython-313.pyc
+³   ³           __init__.cpython-313.pyc
+³   ³           
+³   ÀÄÄÄ__pycache__
+³           admin.cpython-313.pyc
+³           apps.cpython-313.pyc
+³           forms.cpython-313.pyc
+³           models.cpython-313.pyc
+³           urls.cpython-313.pyc
+³           views.cpython-313.pyc
+³           __init__.cpython-313.pyc
+³           
+ÃÄÄÄstatic
+³   ÀÄÄÄcss
+³           utopia_feed.css
+³           
+ÃÄÄÄtemplates
+³   ³   base.html
+³   ³   home.html
+³   ³   
+³   ÃÄÄÄaccounts
+³   ³       account_login.html
+³   ³       account_profile.html
+³   ³       account_quiz.html
+³   ³       account_register.html
+³   ³       people_list.html
+³   ³       
+³   ÃÄÄÄfunding
+³   ³       fundme_confirm_delete.html
+³   ³       fundme_detail.html
+³   ³       fundme_form.html
+³   ³       fundme_list.html
+³   ³       
+³   ÀÄÄÄposts
+³           ask_question.html
+³           emergency_feed.html
+³           feed.html
+³           post_confirm_delete.html
+³           post_detail.html
+³           post_form.html
+³           profile_posts.html
+³           question_detail.html
+³           question_list.html
+³           
+ÀÄÄÄutopia
+    ³   asgi.py
+    ³   settings.py
+    ³   urls.py
+    ³   views.py
+    ³   wsgi.py
+    ³   __init__.py
+    ³   
+    ÀÄÄÄ__pycache__
+            settings.cpython-313.pyc
+            urls.cpython-313.pyc
+            views.cpython-313.pyc
+            wsgi.cpython-313.pyc
+            __init__.cpython-313.pyc
+            
