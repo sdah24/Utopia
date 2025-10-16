@@ -2,8 +2,7 @@
 from django.db import models
 from django.utils import timezone
 
-# Use string reference to avoid circular import problems
-# 'accounts.Profile' is the model that must exist in accounts app
+
 
 class Post(models.Model):
     profile = models.ForeignKey("accounts.Profile", on_delete=models.CASCADE, related_name="posts")
