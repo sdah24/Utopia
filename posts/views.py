@@ -1,6 +1,5 @@
 # posts/views.py
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+
 from django.db import transaction
 from django.db.models import F
 from django.contrib import messages
@@ -8,36 +7,37 @@ from django.urls import reverse
 from .models import Post, Comment, Like, Follow
 from .forms import PostForm, CommentForm
 from accounts.models import Profile
-from django.db.models import Q
-from django.shortcuts import render
+
 from posts.models import Post
 from funding.models import FundMePost
-from accounts.models import Question  # optional if you want to include quizzes/questions
+from accounts.models import Question
 
 from django.db.models import Q
-from django.shortcuts import render
 from posts.models import Post
 from funding.models import FundMePost
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from .models import Question, Answer
 
+
+from accounts.models import Profile
 from .forms import QuestionForm, AnswerForm
 from .models import Question, Answer
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 
 
-# Helper: get request.user.profile safely
+#This view was really very hard to implement so I had to take help and understand things that I wasnt familiar with
+#I thought adding some comments would help me to remember things better when I look onto my codes again
+
+
+# This is basically a Helper function to get request.user.profile safely
 def _get_profile(request):
-    # If your Profile auto-creation is not set, ensure profile exists
+    # here i am ensuring profile exists by taking attribute
     return getattr(request.user, "profile", None)
 
 @login_required
 def feed(request):
     profile = _get_profile(request)
-    # posts from profiles the user follows + own posts
+    # this is for posts from profiles the user follows + own posts
     following_ids = list(Follow.objects.filter(follower=profile).values_list("following_id", flat=True)) if profile else []
     posts = Post.objects.filter(profile__id__in=following_ids + ([profile.id] if profile else [])).select_related("profile__user").prefetch_related("comments")[:100]
     # liked posts ids for this user
@@ -112,9 +112,6 @@ def toggle_like(request, post_id):
 def toggle_follow(request, profile_id):
     profile = _get_profile(request)
     target_profile = get_object_or_404(request.user.__class__.objects.model._meta.apps.get_model("accounts", "Profile"), pk=profile_id)
-    # simpler: get target_profile = get_object_or_404(Profile, pk=profile_id)
-    # But to avoid circular import, you can import accounts.Profile inside function if needed
-    from accounts.models import Profile
     target_profile = get_object_or_404(Profile, pk=profile_id)
 
     if target_profile == profile:
@@ -179,18 +176,14 @@ def emergency_feed(request):
 def people_list(request):
     profile = request.user.profile
 
-    # All profiles except your own
     people = Profile.objects.exclude(id=profile.id)
 
-    # Get list of IDs you already follow
     following_ids = Follow.objects.filter(follower=profile).values_list("following_id", flat=True)
 
     return render(request, "posts/people_list.html", {
         "people": people,
         "following_ids": set(following_ids)
     })
-
-# posts/views.py
 
 
 @login_required
@@ -228,10 +221,7 @@ def question_detail(request, pk):
     return render(request, "posts/question_detail.html", {"question": question, "answers": answers, "form": form})
 
 
-
-
-
-
+#added search feature for most of my contents including posts,question etc
 def search_view(request):
     query = request.GET.get('q')
     post_results = []

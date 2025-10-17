@@ -94,22 +94,17 @@ def logout_view(request):
     return redirect("home")
 
 
-
-
-
-
 @login_required
 def profile(request):
-    # If ?user=username is passed in URL, view that user’s profile instead
+    # If user=username is passed in URL I will view that user’s profile instead
     username = request.GET.get('user')
 
     if username and username != request.user.username:
-        # View someone else’s profile (read-only)
+        # this is how i see someone elses profile (read-only)
         user = get_object_or_404(User, username=username)
         profile = user.profile
         editable = False
     else:
-        # View your own profile (editable)
         user = request.user
         profile = user.profile
         editable = True
@@ -131,7 +126,7 @@ def profile(request):
     return render(request, 'accounts/account_profile.html', {
         'form': form,
         'profile': profile,
-        'editable': editable,  # ✅ Pass to template to hide edit form for others
+        'editable': editable,
         'user_viewed': user,
     })
 
@@ -139,10 +134,9 @@ def profile(request):
 @login_required
 def people_list(request):
     from .models import Profile
-    # Get all profiles except the current user's profile
+    # prottek profile er list except the current user's profile
     people = Profile.objects.exclude(user=request.user)
 
-    # Get IDs of people the user is following (optional if you have a follow model)
     following_ids = []
     if hasattr(request.user, 'following'):
         following_ids = request.user.following.values_list('id', flat=True)
