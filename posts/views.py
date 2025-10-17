@@ -12,7 +12,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from posts.models import Post
 from funding.models import FundMePost
-from accounts.models import QuizQuestion  # optional if you want to include quizzes/questions
+from accounts.models import Question  # optional if you want to include quizzes/questions
 
 from django.db.models import Q
 from django.shortcuts import render
@@ -232,11 +232,13 @@ def question_detail(request, pk):
 
 
 
-def search(request):
+def search_view(request):
     query = request.GET.get('q')
     post_results = []
     fundme_results = []
     user_results = []
+    question_results = []
+    answer_results = []
 
     if query:
         post_results = Post.objects.filter(
@@ -246,13 +248,15 @@ def search(request):
             Q(title__icontains=query) | Q(description__icontains=query)
         )
         user_results = User.objects.filter(
-            Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query)
+            Q(username__icontains=query) |
+            Q(first_name__icontains=query) |
+            Q(last_name__icontains=query)
         )
         question_results = Question.objects.filter(
             Q(title__icontains=query) | Q(body__icontains=query)
         )
         answer_results = Answer.objects.filter(
-            Q(content__icontains=query)
+            Q(body__icontains=query)
         )
 
     context = {
@@ -263,4 +267,4 @@ def search(request):
         'question_results': question_results,
         'answer_results': answer_results,
     }
-    return render(request, 'search_results.html', context)
+    return render(request, 'posts/search_results.html', context)
