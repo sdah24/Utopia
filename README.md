@@ -1,1 +1,1 @@
-I dont know how CSS took the major part in my project!!! I just pushed staticfiles and it was 30K+ lines!!!!!! But 90% of my code was Python!!!!!
+I really dont know how CSS and JS a major part in my project!!! I just pushed a CSS and it added staticfiles and it was 30K+ lines!!!!!! MOST of them were small .js file. But 90% of my code was Python I never used JS in my project!!!!!
