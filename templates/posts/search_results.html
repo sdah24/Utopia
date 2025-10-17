@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h3>Search Results for "{{ query }}"</h3>
+  <hr>
+
+  {% if not query %}
+    <p>Please enter a search term.</p>
+  {% else %}
+    {% if post_results or fundme_results or user_results or question_results or answer_results %}
+
+      {% if post_results %}
+        <h5 class="mt-4 text-primary">Posts</h5>
+        <ul class="list-group mb-3">
+          {% for post in post_results %}
+            <li class="list-group-item">
+              <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if fundme_results %}
+        <h5 class="mt-4 text-success">FundMe Campaigns</h5>
+        <ul class="list-group mb-3">
+          {% for fund in fundme_results %}
+            <li class="list-group-item">
+              <a href="{% url 'funding:fundme_detail' fund.id %}">{{ fund.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if user_results %}
+        <h5 class="mt-4 text-warning">Users</h5>
+        <ul class="list-group mb-3">
+          {% for u in user_results %}
+            <li class="list-group-item">
+              <a href="{% url 'accounts:profile' %}?user={{ u.username }}">{{ u.username }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if question_results %}
+        <h5 class="mt-4 text-info">Questions</h5>
+        <ul class="list-group mb-3">
+          {% for q in question_results %}
+            <li class="list-group-item">
+              <a href="{% url 'posts:question_detail' q.id %}">{{ q.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if answer_results %}
+        <h5 class="mt-4 text-secondary">Answers</h5>
+        <ul class="list-group mb-3">
+          {% for a in answer_results %}
+            <li class="list-group-item">
+              {{ a.content|truncatewords:15 }}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+    {% else %}
+      <p>No results found.</p>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

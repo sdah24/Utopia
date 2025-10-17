@@ -18,6 +18,7 @@ path("people/", views.people_list, name="people_list"),
 path("ask/", views.ask_question, name="ask_question"),
     path("questions/", views.question_list, name="question_list"),
     path("questions/<int:pk>/", views.question_detail, name="question_detail"),
+path('search/', views.search_view, name='search'),
 
 
 ]

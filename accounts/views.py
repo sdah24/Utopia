@@ -8,11 +8,11 @@ from django.contrib.auth.models import User
 from .forms import UserRegisterForm
 from .models import Question
 
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from .forms import ProfilePictureForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ProfilePictureForm
 
 
@@ -99,11 +99,25 @@ def logout_view(request):
 
 
 
+
+
 @login_required
 def profile(request):
-    profile = request.user.profile
+    # If ?user=username is passed in URL, view that user’s profile instead
+    username = request.GET.get('user')
 
-    if request.method == "POST":
+    if username and username != request.user.username:
+        # View someone else’s profile (read-only)
+        user = get_object_or_404(User, username=username)
+        profile = user.profile
+        editable = False
+    else:
+        # View your own profile (editable)
+        user = request.user
+        profile = user.profile
+        editable = True
+
+    if editable and request.method == "POST":
         form = ProfilePictureForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             if 'profile_picture-clear' in request.POST:
@@ -117,7 +131,12 @@ def profile(request):
     else:
         form = ProfilePictureForm(instance=profile)
 
-    return render(request, 'accounts/account_profile.html', {'form': form, 'profile': profile})
+    return render(request, 'accounts/account_profile.html', {
+        'form': form,
+        'profile': profile,
+        'editable': editable,  # ✅ Pass to template to hide edit form for others
+        'user_viewed': user,
+    })
 
 
 @login_required
