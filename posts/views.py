@@ -8,6 +8,11 @@ from django.urls import reverse
 from .models import Post, Comment, Like, Follow
 from .forms import PostForm, CommentForm
 from accounts.models import Profile
+from django.db.models import Q
+from django.shortcuts import render
+from posts.models import Post
+from funding.models import FundMePost
+from accounts.models import QuizQuestion  # optional if you want to include quizzes/questions
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -216,3 +221,15 @@ def question_detail(request, pk):
     else:
         form = AnswerForm()
     return render(request, "posts/question_detail.html", {"question": question, "answers": answers, "form": form})
+
+
+
+def search(request):
+    query = request.GET.get('q')
+    results = []
+
+    if query:
+        results = list(Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))) + \
+                  list(FundMePost.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)))
+
+    return render(request, 'search_results.html', {'query': query, 'results': results})

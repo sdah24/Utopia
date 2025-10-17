@@ -8,8 +8,9 @@
    Root variables & basic reset
    ------------------------- */
 body {
-  background-color: #ffebcc !important;
+  background-color: yellow !important;
 }
+
 
 :root{
   --utopia-green: #00a86b;
