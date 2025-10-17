@@ -14,6 +14,11 @@ from posts.models import Post
 from funding.models import FundMePost
 from accounts.models import QuizQuestion  # optional if you want to include quizzes/questions
 
+from django.db.models import Q
+from django.shortcuts import render
+from posts.models import Post
+from funding.models import FundMePost
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Question, Answer
@@ -224,12 +229,30 @@ def question_detail(request, pk):
 
 
 
+
+
+
 def search(request):
     query = request.GET.get('q')
-    results = []
+    post_results = []
+    fundme_results = []
+    user_results = []
 
     if query:
-        results = list(Post.objects.filter(Q(title__icontains=query) | Q(content__icontains=query))) + \
-                  list(FundMePost.objects.filter(Q(title__icontains=query) | Q(description__icontains=query)))
+        post_results = Post.objects.filter(
+            Q(title__icontains=query) | Q(content__icontains=query)
+        )
+        fundme_results = FundMePost.objects.filter(
+            Q(title__icontains=query) | Q(description__icontains=query)
+        )
+        user_results = User.objects.filter(
+            Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query)
+        )
 
-    return render(request, 'search_results.html', {'query': query, 'results': results})
+    context = {
+        'query': query,
+        'post_results': post_results,
+        'fundme_results': fundme_results,
+        'user_results': user_results,
+    }
+    return render(request, 'search_results.html', context)
