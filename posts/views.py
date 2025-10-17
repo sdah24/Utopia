@@ -248,11 +248,19 @@ def search(request):
         user_results = User.objects.filter(
             Q(username__icontains=query) | Q(first_name__icontains=query) | Q(last_name__icontains=query)
         )
+        question_results = Question.objects.filter(
+            Q(title__icontains=query) | Q(body__icontains=query)
+        )
+        answer_results = Answer.objects.filter(
+            Q(content__icontains=query)
+        )
 
     context = {
         'query': query,
         'post_results': post_results,
         'fundme_results': fundme_results,
         'user_results': user_results,
+        'question_results': question_results,
+        'answer_results': answer_results,
     }
     return render(request, 'search_results.html', context)
